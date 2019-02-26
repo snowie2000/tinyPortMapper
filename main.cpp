@@ -11,6 +11,15 @@ typedef long long i64_t;
 typedef unsigned int u32_t;
 typedef int i32_t;
 
+/*  conditional define for TCP_FASTOPEN */
+#ifndef TCP_FASTOPEN
+#define TCP_FASTOPEN   23
+#endif
+
+#ifndef TCP_FASTOPEN_CONNECT
+#define TCP_FASTOPEN_CONNECT   30
+#endif
+
 int disable_conn_clear=0;
 
 int max_pending_packet=0;
