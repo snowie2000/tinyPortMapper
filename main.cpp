@@ -12,6 +12,10 @@ typedef unsigned int u32_t;
 typedef int i32_t;
 
 /*  conditional define for TCP_FASTOPEN */
+#ifndef SOL_TCP
+#define SOL_TCP   6
+#endif
+
 #ifndef TCP_FASTOPEN
 #define TCP_FASTOPEN   23
 #endif
