@@ -501,6 +501,8 @@ void tcp_accept_cb(struct ev_loop *loop, struct ev_io *watcher, int revents)
 	}
 	set_buf_size(new_remote_fd,socket_buf_size);
 	setnonblocking(new_remote_fd);
+	int val = 1;
+    int result = setsockopt(new_remote_fd, SOL_TCP, TCP_FASTOPEN_CONNECT, &val, sizeof(int));
 
 	ret=connect(new_remote_fd,(struct sockaddr*) &remote_addr.inner,remote_addr.get_len());
 	if(ret!=0)
@@ -753,6 +755,7 @@ int event_loop()
 
 	int local_listen_fd_tcp=-1;
 	int local_listen_fd_udp=-1;
+	int qlen = 5;
 
 	//struct sockaddr_in local_me,remote_dst;
 	int yes = 1;int ret;
@@ -763,6 +766,7 @@ int event_loop()
 		myexit(1);
 	}
 
+	setsockopt(local_listen_fd_tcp, SOL_TCP, TCP_FASTOPEN, &qlen, sizeof(qlen));	// enable TFO
 	setsockopt(local_listen_fd_tcp, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)); //avoid annoying bind problem
 	set_buf_size(local_listen_fd_tcp,listen_fd_buf_size);
 	setnonblocking(local_listen_fd_tcp);
